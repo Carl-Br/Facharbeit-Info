@@ -317,9 +317,12 @@ MonoBehaviour:
   Welt: {fileID: 990591900}
   Haus: {fileID: 4335431200475425882, guid: 06f0d9a02c407f84287cbc37c7de861a, type: 3}
   HotSpot: {fileID: 1070109022545203995, guid: 37d4f5975dbe43b40a9811ad659c1ede, type: 3}
+  NormalePerson: {fileID: 1471584309317265875, guid: b64e724e03881ac4d92e3ee6de4fa168,
+    type: 3}
   Ansteckungsradius: 4.5
   hotSpots: 3
-  Personen: 100
+  personen: 20
+  personenListe: []
 --- !u!4 &1285285435
 Transform:
   m_ObjectHideFlags: 0

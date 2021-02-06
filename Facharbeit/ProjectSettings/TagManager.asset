@@ -44,3 +44,6 @@ TagManager:
   - name: Haus
     uniqueID: 3707847335
     locked: 0
+  - name: Person
+    uniqueID: 1858091879
+    locked: 0

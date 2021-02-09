@@ -2,38 +2,51 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Person : MonoBehaviour
 {
-    Vector2 Position;
-    bool gehen = false;
+    Vector2 Zielposition;
+    Vector2 currentPosition;
+    public Vector2 home;
+    public Vector2 vorDemHausPosition = new Vector2(0, 0);
+    public List<Vector2> ZielListe; //Eine Liste von Zielpositionen, die die Person nacheinander abarbeiten soll.
     // Start is called before the first frame update
     void Start()
     {
-        geheZuPosition(new Vector2(transform.position.x, transform.position.y));
+        start();
+        home = new Vector2(transform.position.x, transform.position.y);
+        vorDemHausPosition = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
+        addZiel(vorDemHausPosition);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gehen == true)
+        currentPosition = new Vector2(transform.position.x, transform.position.y);
+        if (ZielListe.Count >= 1)//Wenn es ein ziel gibt, außer das Ziel aus dem Haus zu gehen
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), Position, 0.95f * Time.deltaTime);
-            if(new Vector2(transform.position.x , transform.position.y)== Position)
+            Zielposition = ZielListe[0];//wähle das erste Ziel aus der Liste aus
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), Zielposition, 0.95f * Time.deltaTime);
+            if(currentPosition == Zielposition)//wenn an der Zielposition angekommen, dann aus liste entfernen
             {
-                gehen = false;
+                ZielListe.RemoveAt(0);//lösche erstes Element
+                //ZielListe.
             }
         }
-    }
 
-    private void geheZuPosition(Vector2 position)
-    {
-        System.Random rnd = new System.Random();
-        Position = new Vector2(transform.position.x - 0.5f, transform.position.y - 0.5f);
-        gehen = true;
-        
     }
+    public void addZiel(Vector2 ziel)
+    {
+        ZielListe.Add(ziel);
+    }
+    private void start()
+    {
+        ZielListe = new List<Vector2>();
+        Debug.Log(ZielListe.Count);
+    }
+    
     
 
 }

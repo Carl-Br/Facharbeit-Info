@@ -320,10 +320,11 @@ MonoBehaviour:
   NormalePerson: {fileID: 1471584309317265875, guid: b64e724e03881ac4d92e3ee6de4fa168,
     type: 3}
   Ansteckungsradius: 4.5
-  hotspots: 10
-  personen: 100
+  hotspots: 100
+  personen: 1000
   personenListe: []
   hotspotListe: []
+  geschwindigkeit: 0.95
 --- !u!4 &1285285435
 Transform:
   m_ObjectHideFlags: 0

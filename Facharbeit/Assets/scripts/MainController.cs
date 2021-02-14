@@ -16,6 +16,7 @@ public class MainController : MonoBehaviour
     public int personen = 30; //zwischen 30 und 2000
     public List<GameObject> personenListe;
     public List<GameObject> hotspotListe;
+    public float geschwindigkeit = 0.95f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,41 +24,34 @@ public class MainController : MonoBehaviour
         personenListe = new List<GameObject>();
         hotspotListe = new List<GameObject>();
         erstelleWelt();
-        starteSimulation();
+        Debug.Log("Es exesieren "+personenListe.Count+" Personen");
+        StartCoroutine(starteSimulation());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        geschwindigkeitsEinsteller();
     }
-    private void starteSimulation()
+    private void geschwindigkeitsEinsteller()
+    {
+        foreach (GameObject gameObject in personenListe)
+        {
+            Person p = gameObject.GetComponent<Person>();//Holt sich das c# script von dem gerade ausgewähltem Personenobject
+            p.geschwindigkeit = geschwindigkeit;
+        }
+    }
+    IEnumerator starteSimulation()//enumerator, damit gewartet wird bis alle Objekte erstellt wurden ( Zeile 44 gehört dazu)
     {
         
         Debug.Log("starte Simulation");
-        Person p;
-        Random rnd = new Random();
-        List<Vector2> List = null;
-        foreach (GameObject gameObject in personenListe)//jede Person
+        foreach (GameObject gameObject in personenListe)
         {
-            
-            GameObject randomHotSpot = hotspotListe[rnd.Next(0, hotspots)];//wählt einen zufälligen hotspot, wo die gerade ausgewählte person hin gehen soll
-            p = gameObject.GetComponent<Person>();//Holt sich das c# script von dem gerade ausgewähltem Personenobject
-            p.addZiel(new Vector2 (randomHotSpot.transform.position.x, randomHotSpot.transform.position.y));
-            p.addZiel(p.vorDemHausPosition);
-            List = p.ZielListe;
-            Debug.Log(List.Count);
+            Person p = gameObject.GetComponent<Person>();//Holt sich das c# script von dem gerade ausgewähltem Personenobject
+            p.Starts(hotspotListe,3);
+            yield return new WaitForEndOfFrame();
         }
-        /*/test code
-        for (int i = 0; i < List.Count; i++)
-        {
-            Debug.Log(List[i]+"        "+i);
-        }
-        */
-        Debug.Log(List.Count);
-        
-         
-        
+       
     }
 
     //Welt Bereich
@@ -109,15 +103,13 @@ public class MainController : MonoBehaviour
 
             if (setztHotSpot == true)//setzte hotspot ohne person
             {
-                GameObject gameObjectDesHotspots = Hotspot;
+                GameObject gameObjectDesHotspots = Instantiate(Hotspot, new Vector3(xPosition, yPosition, 1f), new Quaternion(0f, 0f, 0f, 0f));
                 hotspotListe.Add(gameObjectDesHotspots);
-                Instantiate(gameObjectDesHotspots, new Vector3(xPosition, yPosition, 1f), new Quaternion(0f, 0f, 0f, 0f));
             }
             else//setzt Haus mit person
             {
-                GameObject gameObjectDerPerson = NormalePerson;
+                GameObject gameObjectDerPerson = Instantiate(NormalePerson, new Vector3(xPosition, yPosition, 1f), new Quaternion(0f, 0f, 0f, 0f));
                 personenListe.Add(gameObjectDerPerson);
-                Instantiate(gameObjectDerPerson, new Vector3(xPosition, yPosition, 1f), new Quaternion(0f, 0f, 0f, 0f));
                 Instantiate(Haus, new Vector3(xPosition, yPosition, 1f), new Quaternion(0f, 0f, 0f, 0f));
             }
             xPosition++;
